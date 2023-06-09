@@ -41,7 +41,7 @@ const ModalUser = ({ user }) => {
             <button style={{ backgroundColor: '#1677ff' }} onClick={showModal}>
                 <MdModeEdit />
             </button>
-            <Modal title="Editar usuario" className='list__clients__details__modal' open={isModalOpen}   onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Editar usuario" className='list__clients__details__modal' open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
                 <form onSubmit={handleSubmit(editUser)}>
                     <label>
                         Nombre

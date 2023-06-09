@@ -27,7 +27,8 @@ const ListClients = () => {
             cancelButtonColor: "#d33",
         }).then((response) => {
             if (response.isConfirmed) {
-                deleteUser(user.id)
+                const userDeleted = {...user, is_active : false}
+                deleteUser(user.id, userDeleted)
 
                 Swal.fire({
                     icon: 'success',
@@ -42,6 +43,7 @@ const ListClients = () => {
     useEffect(() => {
         getAllUsers().then((response) => {
             setData(response)
+            console.log(response);
         })
             .catch((error) => { console.log(error); })
 
@@ -70,7 +72,7 @@ const ListClients = () => {
                     <input type="text" placeholder='Buscar...' onChange={(e) => setInput(e.target.value)} />
                 </section>
                 <section className='list__clients__details'>
-                    {filterClients.length ? filterClients.map((user, index) =>
+                    {filterClients.length ? filterClients.filter(user => user.is_active).map((user, index) =>
                         <figure key={index}>
                             <img src={man} alt="profile" />
                             <figcaption>
