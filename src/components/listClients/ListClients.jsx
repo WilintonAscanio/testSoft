@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Button, Space } from 'antd'
 import { IoMdAdd } from 'react-icons/io'
 import { BsSearch } from 'react-icons/bs'
-import { MdModeEdit } from 'react-icons/md'
 import { MdDelete } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import man from '../../assets/hombre.png'
@@ -16,17 +15,6 @@ const ListClients = () => {
     const [data, setData] = useState([])
     const [input, setInput] = useState('')
     const navigate = useNavigate()
-    useEffect(() => {
-        getAllUsers().then((response) => {
-            setData(response)
-            console.log(response);
-        })
-            .catch((error) => { console.log(error); })
-
-
-
-
-    }, [])
 
     const filterClients = data ? data.filter(user => user.name.toLowerCase().includes(input.toLowerCase()) || user.created_at.toLowerCase().includes(input.toLowerCase())) : ''
 
@@ -51,6 +39,18 @@ const ListClients = () => {
         }).catch((error) => { console.log(error); })
 
     }
+    useEffect(() => {
+        getAllUsers().then((response) => {
+            setData(response)
+        })
+            .catch((error) => { console.log(error); })
+
+
+
+
+    }, [deleteUserData])
+
+
 
 
 
@@ -70,7 +70,7 @@ const ListClients = () => {
                     <input type="text" placeholder='Buscar...' onChange={(e) => setInput(e.target.value)} />
                 </section>
                 <section className='list__clients__details'>
-                    {filterClients ? filterClients.map((user, index) =>
+                    {filterClients.length ? filterClients.map((user, index) =>
                         <figure key={index}>
                             <img src={man} alt="profile" />
                             <figcaption>
@@ -92,7 +92,7 @@ const ListClients = () => {
                             </figcaption>
 
                         </figure>) : ''}
-                    {input && !filterClients.length ? <h1>No hay usuario con esas especificaciones</h1> : ''}
+                    {input && !filterClients.length || !filterClients.length ? <h1>Ningún usuario registrado</h1> : ''}
 
 
                 </section>
