@@ -2,6 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { createUser } from '../../services/createUser'
 
 const Create = () => {
   const { formState: { errors }, handleSubmit, register, reset } = useForm()
@@ -14,6 +15,7 @@ const Create = () => {
       text : 'Usuario agregado correctamente'
     })
     reset()
+    createUser(data)
 
   }
   return (
@@ -54,7 +56,7 @@ const Create = () => {
           </label>
         </section>
         <section className='create__form__btns'>
-          <button onClick={() => navigate('/list')} style={{ backgroundColor: '#f24036' }} >Cancelar</button>
+          <small onClick={() => navigate('/list')} style={{ backgroundColor: '#f24036' }} >Cancelar</small>
           <button type='submit' style={{ backgroundColor: '#1875d2' }}>Guardar</button>
         </section>
       </form>

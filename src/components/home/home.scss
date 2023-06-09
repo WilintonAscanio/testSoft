@@ -14,7 +14,7 @@
         align-items: center;
         padding: 5%;
         color: white;
-        
+
 
 
     }
@@ -124,11 +124,37 @@
                 }
             }
 
+            &__modal {
+
+                & form,
+                label {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+
+
+                    & label {
+                        font-weight: bold;
+                        gap: 5px;
+
+                        & input {
+                            height: 30px;
+                            outline: none;
+                            border-radius: 5px;
+                            padding: 5px;
+                            border: 1px solid gray;
+                        }
+                    }
+
+                }
+            }
+
 
 
         }
     }
 }
+
 .addClient {
     display: flex;
     gap: 5px;
@@ -169,6 +195,7 @@
                 padding: 10px;
                 border: 1px solid gray;
             }
+
             & span {
                 color: red;
                 font-size: 12px;
@@ -204,13 +231,17 @@
             gap: 20px;
             align-items: center;
 
-            & button {
+            & button,
+            small {
                 height: 40px;
                 width: 140px;
                 cursor: pointer;
                 border: none;
                 color: white;
                 border-radius: 3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
                 &:hover {
                     opacity: 0.8;

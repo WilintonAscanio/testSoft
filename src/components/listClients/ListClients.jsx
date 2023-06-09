@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Space } from 'antd'
 import { IoMdAdd } from 'react-icons/io'
 import { BsSearch } from 'react-icons/bs'
@@ -6,10 +6,54 @@ import { MdModeEdit } from 'react-icons/md'
 import { MdDelete } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import man from '../../assets/hombre.png'
+import { getAllUsers } from '../../services/getAllUsers'
+import ModalUser from '../modal/ModalUser'
+import Swal from 'sweetalert2'
+import { deleteUser } from '../../services/deleteUser'
 
 
 const ListClients = () => {
+    const [data, setData] = useState([])
+    const [input, setInput] = useState('')
     const navigate = useNavigate()
+    useEffect(() => {
+        getAllUsers().then((response) => {
+            setData(response)
+            console.log(response);
+        })
+            .catch((error) => { console.log(error); })
+
+
+
+
+    }, [])
+
+    const filterClients = data ? data.filter(user => user.name.toLowerCase().includes(input.toLowerCase()) || user.created_at.toLowerCase().includes(input.toLowerCase())) : ''
+
+    const deleteUserData = (user) => {
+        Swal.fire({
+            icon: 'info',
+            text: `Se borrará el siguiente usuario : ${user.name}`,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+        }).then((response) => {
+            if (response.isConfirmed) {
+                deleteUser(user.id)
+
+                Swal.fire({
+                    icon: 'success',
+                    text: 'Usuario borrado exitosamente',
+
+                })
+
+            }
+        }).catch((error) => { console.log(error); })
+
+    }
+
+
+
 
     return (
         <div className='list__clients'>
@@ -23,51 +67,34 @@ const ListClients = () => {
             <article>
                 <section className='list__clients__search'>
                     <BsSearch />
-                    <input type="text" placeholder='Buscar...' />
+                    <input type="text" placeholder='Buscar...' onChange={(e) => setInput(e.target.value)} />
                 </section>
                 <section className='list__clients__details'>
-                    <figure>
-                        <img src={man} alt="profile" />
-                        <figcaption>
-                            <section>
-                                <strong>
-                                    Nombre de la persona
-                                </strong>
-                                <span>Correo de la persona</span>
+                    {filterClients ? filterClients.map((user, index) =>
+                        <figure key={index}>
+                            <img src={man} alt="profile" />
+                            <figcaption>
+                                <section>
+                                    <strong>
+                                        {user.name}
+                                    </strong>
+                                    <span>{user.email}</span>
 
-                            </section>
-                            <section>
-                                <span>Fecha de nacimiento | Fecha de creación</span>
-                                <div>
-                                    <button style={{ backgroundColor: '#1875d2' }}><MdModeEdit /></button>
-                                    <button style={{ backgroundColor: '#f24036' }}><MdDelete /></button>
-                                </div>
+                                </section>
+                                <section>
+                                    <span>{user.date}|{user.created_at}</span>
+                                    <div>
+                                        <ModalUser user={user} />
+                                        <button style={{ backgroundColor: '#f24036' }} onClick={() => deleteUserData(user)}><MdDelete /></button>
+                                    </div>
 
-                            </section>
-                        </figcaption>
+                                </section>
+                            </figcaption>
 
-                    </figure>
-                    <figure>
-                        <img src={man} alt="profile" />
-                        <figcaption>
-                            <section>
-                                <strong>
-                                    Nombre de la persona
-                                </strong>
-                                <span>Correo de la persona</span>
+                        </figure>) : ''}
+                    {input && !filterClients.length ? <h1>No hay usuario con esas especificaciones</h1> : ''}
 
-                            </section>
-                            <section>
-                                <span>Fecha de nacimiento | Fecha de creación</span>
-                                <div>
-                                    <button style={{ backgroundColor: '#1875d2' }}><MdModeEdit /></button>
-                                    <button style={{ backgroundColor: '#f24036' }}><MdDelete /></button>
-                                </div>
 
-                            </section>
-                        </figcaption>
-
-                    </figure>
                 </section>
 
             </article>
