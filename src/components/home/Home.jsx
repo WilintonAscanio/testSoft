@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './home.scss'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 
 const Home = () => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+
+        navigate('/list')
+      
+
+     
+    }, [])
+    
     return (
         <article className='list'>
             <Outlet />
