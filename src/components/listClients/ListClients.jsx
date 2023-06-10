@@ -27,7 +27,7 @@ const ListClients = () => {
             cancelButtonColor: "#d33",
         }).then((response) => {
             if (response.isConfirmed) {
-                const userDeleted = {...user, is_active : false}
+                const userDeleted = { ...user, is_active: false }
                 deleteUser(user.id, userDeleted)
 
                 Swal.fire({
@@ -43,7 +43,6 @@ const ListClients = () => {
     useEffect(() => {
         getAllUsers().then((response) => {
             setData(response)
-            console.log(response);
         })
             .catch((error) => { console.log(error); })
 
